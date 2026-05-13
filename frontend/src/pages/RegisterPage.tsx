@@ -1,24 +1,37 @@
-import { useState } from "react";
 import axios from "axios";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const schema = z.object({
+  email: z.string().email("Invalid email"),
+  username: z.string().min(3, "Min 3 characters"),
+  password: z.string().min(6, "Min 6 characters"),
+});
+
+type FormData = z.infer<typeof schema>;
 
 const RegisterPage = () => {
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  });
 
-  const register = async () => {
+  const onSubmit = async (data: FormData) => {
     try {
-      const res = await axios.post("http://localhost:4000/auth/register", {
-        email,
-        username,
-        password,
-      });
+      const res = await axios.post(
+        "http://localhost:4000/auth/register",
+        data
+      );
 
       console.log("Registered:", res.data);
       alert("User created!");
-    } catch (err) {
-      console.error(err);
-      alert("Error during registration");
+    } catch (err: any) {
+      console.error(err.response?.data);
+      alert(err.response?.data?.message);
     }
   };
 
@@ -26,30 +39,30 @@ const RegisterPage = () => {
     <div style={{ padding: "20px" }}>
       <h1>Register</h1>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "250px" }}>
-        <input
-          placeholder="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+          width: "250px",
+        }}
+      >
+        <input placeholder="email" {...register("email")} />
+        <p style={{ color: "red" }}>{errors.email?.message}</p>
 
-        <input
-          placeholder="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
+        <input placeholder="username" {...register("username")} />
+        <p style={{ color: "red" }}>{errors.username?.message}</p>
 
         <input
           placeholder="password"
           type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          {...register("password")}
         />
+        <p style={{ color: "red" }}>{errors.password?.message}</p>
 
-        <button onClick={register}>
-          Register
-        </button>
-      </div>
+        <button type="submit">Register</button>
+      </form>
     </div>
   );
 };

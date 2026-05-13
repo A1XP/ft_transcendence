@@ -1,5 +1,6 @@
 import { UsersService } from '../users/users.service';
 import { RegisterDto } from './dto/register.dto';
+import { LoginDto } from './dto/login.dto';
 export declare class AuthService {
     private usersService;
     constructor(usersService: UsersService);
@@ -20,5 +21,10 @@ export declare class AuthService {
         last_seen: Date | null;
         created_at: Date;
         updated_at: Date;
+    }>;
+    login(dto: LoginDto): Promise<{
+        message: string;
+        userId: string;
+        email: string;
     }>;
 }

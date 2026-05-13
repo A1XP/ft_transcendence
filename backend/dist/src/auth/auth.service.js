@@ -59,6 +59,19 @@ let AuthService = class AuthService {
             password_hash: hashedPassword,
         });
     }
+    async login(dto) {
+        const user = await this.usersService.findByEmail(dto.email);
+        if (!user || !user.password_hash)
+            throw new common_1.UnauthorizedException();
+        const isValid = await bcrypt.compare(dto.password, user.password_hash);
+        if (!isValid)
+            throw new common_1.UnauthorizedException('Invalid credentials');
+        return {
+            message: 'Login successful',
+            userId: user.id,
+            email: user.email,
+        };
+    }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([

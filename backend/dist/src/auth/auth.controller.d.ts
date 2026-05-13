@@ -1,4 +1,5 @@
 import { RegisterDto } from './dto/register.dto';
+import { LoginDto } from './dto/login.dto';
 import { AuthService } from './auth.service';
 export declare class AuthController {
     private readonly authService;
@@ -20,5 +21,10 @@ export declare class AuthController {
         last_seen: Date | null;
         created_at: Date;
         updated_at: Date;
+    }>;
+    login(dto: LoginDto): Promise<{
+        message: string;
+        userId: string;
+        email: string;
     }>;
 }
