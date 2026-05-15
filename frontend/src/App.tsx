@@ -92,12 +92,14 @@
 import { Routes, Route } from "react-router-dom";
 import UsersPage from "./pages/UsersPage";
 import RegisterPage from "./pages/RegisterPage";
+import Login from "./pages/Login";
 
 const App = () => {
   return (
     <Routes>
       <Route path="/" element={<UsersPage />} />
       <Route path="/register" element={<RegisterPage />} />
+      <Route path="/login" element={<Login />} />
     </Routes>
   );
 };

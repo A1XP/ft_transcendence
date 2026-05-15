@@ -20,6 +20,7 @@ export class AuthService {
   }
 
   async login(dto: LoginDto) {
+    
     const user = await this.usersService.findByEmail(dto.email);
 
     if (!user || !user.password_hash)

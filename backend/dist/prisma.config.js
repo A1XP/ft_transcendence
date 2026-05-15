@@ -8,7 +8,7 @@ exports.default = (0, config_1.defineConfig)({
         url: process.env.DATABASE_URL,
     },
     migrations: {
-        seed: "ts-node prisma/seed.ts",
+        seed: "tsx prisma/seed.ts",
     },
 });
 //# sourceMappingURL=prisma.config.js.map
