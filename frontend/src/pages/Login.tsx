@@ -1,8 +1,10 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import axios from "axios";
 import { useState } from "react";
+import { api } from "../api/api";
+import { useNavigate } from "react-router-dom";
+
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email"),
@@ -14,6 +16,7 @@ type LoginForm = z.infer<typeof loginSchema>;
 export default function Login() {
   const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -28,15 +31,12 @@ export default function Login() {
     setError(null);
 
     try {
-      const res = await axios.post(
-        "http://localhost:4000/auth/login",
+      await api.post(
+        "/auth/login",
         data
       );
 
-      setSuccess(`Welcome ${res.data.email}! Login successful`);
-
-      // JWT would be stored here for authenticated requests:
-      // localStorage.setItem("token", res.data.access_token);
+      navigate("/profile");
 
     } catch (err: any) {
       setError(

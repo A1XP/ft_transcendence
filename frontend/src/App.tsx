@@ -93,6 +93,8 @@ import { Routes, Route } from "react-router-dom";
 import UsersPage from "./pages/UsersPage";
 import RegisterPage from "./pages/RegisterPage";
 import Login from "./pages/Login";
+import ProtectedRoute from "./ProtectedRoute";
+import Profile from "./pages/Profile";
 
 const App = () => {
   return (
@@ -100,6 +102,7 @@ const App = () => {
       <Route path="/" element={<UsersPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/profile" element={ <ProtectedRoute> <Profile /> </ProtectedRoute> } />
     </Routes>
   );
 };

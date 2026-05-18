@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { api } from "../api/api";
 
 const schema = z.object({
   email: z.string().email("Invalid email"),
@@ -22,8 +22,8 @@ const RegisterPage = () => {
 
   const onSubmit = async (data: FormData) => {
     try {
-      const res = await axios.post(
-        "http://localhost:4000/auth/register",
+      const res = await api.post(
+        "/auth/register",
         data
       );
 
